@@ -4,10 +4,7 @@ const Trie& Dictionary::get_dictionary() const { return m_trie; }
 
 std::vector<std::string> Dictionary::get_suggestions(
     const std::string& word) const {
-  levenshtein::Comparator comparator;
-  comparator.set_target(word);
-
-  std::set<std::string, levenshtein::Comparator> suggestions{comparator};
+  std::set<std::string> suggestions;
 
   for (int i = 0; i < word.length(); ++i) {
     for (char ch = 'a'; ch <= 'z'; ++ch) {
@@ -91,8 +88,13 @@ std::vector<std::string> Dictionary::get_suggestions(
     suggestions.insert(modified_word);
   }
 
-  std::vector<std::string> sorted_suggestions{suggestions.begin(),
-                                              suggestions.end()};
+  std::vector<std::string> sorted_suggestions{
+      suggestions.begin(), std::next(suggestions.begin(), 5)};
+
+  levenshtein::Comparator comparator;
+  comparator.set_target(word);
+
+  std::sort(sorted_suggestions.begin(), sorted_suggestions.end(), comparator);
 
   return sorted_suggestions;
 }

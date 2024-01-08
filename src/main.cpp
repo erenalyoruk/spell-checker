@@ -15,14 +15,13 @@ int main() {
     std::cin >> word;
 
     if (!dictionary.get_dictionary().search(word)) {
-      std::cout << "Word is misspelled" << std::endl;
-
       std::vector<std::string> suggestions = dictionary.get_suggestions(word);
       if (suggestions.empty()) {
         std::cout << "No suggestion found for word: " << word << std::endl;
         continue;
       }
 
+      std::cout << "Word is misspelled. Possible alternatives:" << std::endl;
       for (const auto& suggestion : suggestions) {
         std::cout << "\tSuggestion: " << suggestion << std::endl;
       }
